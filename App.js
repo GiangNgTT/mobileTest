@@ -4,21 +4,36 @@ import {Text, View, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-const DirectionLayout = () => {
-  const [direction, setDirection] = useState('ltr');
+function LayoutDirection() {
+  const [selectedValue, setSelectedValue] = useState('ltr');
   const values = ['ltr', 'rtl'];
-
+  
   return (
-    <PreviewLayout
-      label="direction"
-      selectedValue={direction}
-      setSelectedValue={setDirection}>
-      <View style={[styles.box, {backgroundColor: 'powderblue'}]} />
-      <View style={[styles.box, {backgroundColor: 'skyblue'}]} />
-      <View style={[styles.box, {backgroundColor: 'steelblue'}]} />
-    </PreviewLayout>
+    <View style={{padding: 10, flex: 1}}>
+      <View style={styles.row}>
+        {values.map(value => (
+          <TouchableOpacity
+            key={value}
+            onPress={() => setSelectedValue(value)}
+            style={[styles.button, selectedValue === value && styles.selected]}>
+            <Text
+              style={[
+                styles.buttonLabel,
+                selectedValue === value && styles.selectedLabel,
+              ]}>
+                {value}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <View style={[styles.container, {direction: selectedValue}]}>
+        <View style={{width: 50, height: 50, backgroundColor: '#EE2C38'}} />
+        <View style={{width: 50, height: 50, backgroundColor: '#FAA030'}} />
+        <View style={{width: 50, height: 50, backgroundColor: '#32B76C'}} />
+      </View>
+    </View>
   );
-};
+}
 
 const PreviewLayout = ({
   label,
@@ -49,7 +64,7 @@ const PreviewLayout = ({
   </View>
 );
 
-function SecondScreen() {
+function Position() {
   const [position, setPosition] = useState('relative');
   const values = ['relative', 'absolute'];
 
@@ -110,7 +125,7 @@ function SecondScreen() {
   );
 }
 
-const ThirdScreen = () => {
+const JustifyContent = () => {
   const [justifyContent, setJustifyContent] = useState("flex-start");
 
   return (
@@ -145,9 +160,9 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="direction" component={DirectionLayout} />
-      <Tab.Screen name="position" component={SecondScreen} />
-      <Tab.Screen name="justify-content" component={ThirdScreen} />
+      <Tab.Screen name="direction" component={LayoutDirection} />
+      <Tab.Screen name="position" component={Position} />
+      <Tab.Screen name="justify-content" component={JustifyContent} />
     </Tab.Navigator>
   );
 }
